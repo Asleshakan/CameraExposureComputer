@@ -1,0 +1,6 @@
+{
+  "name": "myproject",
+  "dependencies": {
+    "seiyria-bootstrap-slider": "v10.0.0"
+  }
+}

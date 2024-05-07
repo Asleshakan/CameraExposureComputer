@@ -1,0 +1,97 @@
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@model IndexViewModel
+
+@{
+    ViewData["Title"] = "Camera Exposure Calculator";
+}
+<link rel="stylesheet" runat="server" media="screen" href="~/css/site.css" />
+<style>
+    table {
+        table-layout: fixed;
+        word-wrap: break-word;
+    }
+
+    /* DivTable.com */
+    .divTable {
+        display: table;
+        width: 100%;
+    }
+
+    .divTableRow {
+        display: table-row;
+    }
+
+    .divTableHeading {
+        background-color: #EEE;
+        display: table-header-group;
+    }
+
+    .divTableCell, .divTableHead {
+        border: 1px solid #999999;
+        display: table-cell;
+        padding: 3px 10px;
+    }
+
+    .divTableHeading {
+        background-color: #EEE;
+        display: table-header-group;
+        font-weight: bold;
+    }
+
+    .divTableFoot {
+        background-color: #EEE;
+        display: table-footer-group;
+        font-weight: bold;
+    }
+
+    .divTableBody {
+        display: table-row-group;
+    }
+</style>
+    <div class="container-fluid main-app">
+        <form asp-action="mainAction">
+
+            <div class="row">
+                <div class="col-sm-12 CalculationDiv">
+                    <div class="row">
+                        <div class="col-xs-3 col-sm-2 col-md-4">Aperture</div>
+                        <div class="hidden-xs col-sm-2 col-md-2"><label id="FStopDisplay">F16</label></div>
+                        <div class="col-xs-8 col-sm-8 col-md-6"><input id="FStop" data-slider-id="FStop" asp-for="FStop" type="text" data-slider-handle="custom" data-slider-min="0" data-slider-max="12" data-slider-step="1" data-slider-value="4" class="slider" /></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-3 col-sm-2 col-md-4">Shutter Speed</div>
+                        <div class="hidden-xs col-sm-2 col-md-2"><label id="ShutterSpeedDisplay">1:125</label></div>
+                        <div class="col-xs-8 col-sm-8 col-md-6"><input id="ShutterSpeed" data-slider-id="ShutterSpeed" asp-for="ShutterSpeed" type="text" data-slider-handle="custom" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="0" class="slider" /></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-3 col-sm-2 col-md-4">ISO</div>
+                        <div class="hidden-xs col-sm-2 col-md-2"><label id="IsoDisplay">100</label></div>
+                        <div class="col-xs-8 col-sm-8 col-md-6"><input id="Iso" data-slider-id="Iso" asp-for="Iso" type="text" data-slider-handle="custom" data-slider-min="0" data-slider-max="7" data-slider-step="1" data-slider-value="2" class="slider" /></div>
+                    </div>
+
+                </div>
+                <div class="col-sm-12 CalculationDiv">
+                    <div class="row">
+                        <div class="col-xs-4">Flash Guide Number (&#64 ISO 100)</div>
+                        <div class="col-xs-2 "><input class="NumberDisplay" id="GN" value="0" asp-for="GN" type="number" /></div>
+                        <div class="col-xs-3"><label class="NumberDisplay" id="GNDisplayMeters">none</label></div>
+                        <div class="col-xs-3"><lable class="NumberDisplay" id="GNDisplayFeet">none</lable></div>
+                    </div>
+                
+                    <div class="row">
+                        <div class="hidden-xs col-sm-2 col-md-2">Exposure Value</div>
+                        <div class="hidden-xs col-sm-2 col-md-2"></div>
+                        <div class="col-xs-12 col-sm-8 col-md-8 ExposureDiv"><label id="ev" asp-for="Ev" name="Ev" value="0" /></div>
+                    </div>
+                </div>
+
+               @* <div class="ads"></div>*@
+            </div>
+        </form>
+    </div>
+@*
+    <div style="width:25%" class="ads col-sm-2 right-side">Ad goes here</div>
+    *@
+    <div style="width=100%; background-color=red;"></div>
+
+@*<footer></footer>*@

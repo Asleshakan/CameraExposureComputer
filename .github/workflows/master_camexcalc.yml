@@ -1,0 +1,75 @@
+# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
+# More GitHub Actions for Azure: https://github.com/Azure/actions
+
+name: Build and deploy ASP.Net Core app to Azure Web App - CamExCalc
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+env:
+    AZURE_WEBAPP_NAME: CamExCalc
+    SOLUTION_NAME: CameraExposureComputer
+    AZURE_WEBAPP_PACKAGE_PATH: '.'
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+          include-prerelease: true
+
+      - name: Build with dotnet
+        run: dotnet build --configuration Release
+
+      - name: dotnet publish
+        run: dotnet publish -c Release -o ${{env.AZURE_WEBAPP_PACKAGE_PATH}}/${{env.SOLUTION_NAME}}
+        #run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}\my-app
+        #run: dotnet publish -c Release -o D:\Dropbox\1programming2\exposureComputer\Exposure_Computer_ASP\CameraExposureComputer\CameraExposureComputer 
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v4
+        with:
+          name: uploaded-artifact
+          path:  ${{env.AZURE_WEBAPP_PACKAGE_PATH}}/${{env.SOLUTION_NAME}}
+          #path: D:\Dropbox\1programming2\exposureComputer\Exposure_Computer_ASP\CameraExposureComputer\CameraExposureComputer.sln
+
+  deploy:
+    runs-on: windows-latest
+    needs: build
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+    permissions:
+      id-token: write #This is required for requesting the JWT
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: uploaded-artifact
+          #path:  ${{env.AZURE_WEBAPP_PACKAGE_PATH}}/${{env.SOLUTION_NAME}}
+
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_33A408DAFAD5440AB37D6BF454F30F38 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_8A869834F2E64245ADC9F3CDE076D83A }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_EAC1353950B84897A99F9342F58233C9 }}
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{env.AZURE_WEBAPP_NAME}}
+     
+          #don't need package name. defaults to '.' which is the root of the repo
+          
+          
